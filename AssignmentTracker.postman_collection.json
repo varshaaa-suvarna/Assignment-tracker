@@ -1,0 +1,226 @@
+{
+  "info": {
+    "name": "Assignment Tracker API",
+    "_postman_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "description": "Postman collection for Assignment Workflow & Submission Tracking System",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base_url", "value": "http://localhost:5000/api" },
+    { "key": "assignment_id", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": { "raw": "http://localhost:5000/", "host": ["localhost"], "port": "5000", "path": [""] }
+      }
+    },
+    {
+      "name": "Assignments",
+      "item": [
+        {
+          "name": "Create Assignment",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Data Structures Lab 1\",\n  \"subject\": \"Computer Science\",\n  \"description\": \"Implement a binary search tree with insert and search operations.\",\n  \"dueDate\": \"2025-12-31T23:59:00\",\n  \"instructor\": \"Dr. Sharma\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/assignments", "host": ["{{base_url}}"], "path": ["assignments"] }
+          }
+        },
+        {
+          "name": "Get All Assignments",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{base_url}}/assignments", "host": ["{{base_url}}"], "path": ["assignments"] }
+          }
+        },
+        {
+          "name": "Get Assignments - Filter by Status (active)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/assignments?status=active",
+              "host": ["{{base_url}}"],
+              "path": ["assignments"],
+              "query": [{ "key": "status", "value": "active" }]
+            }
+          }
+        },
+        {
+          "name": "Get Assignments - Filter by Status (closed)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/assignments?status=closed",
+              "host": ["{{base_url}}"],
+              "path": ["assignments"],
+              "query": [{ "key": "status", "value": "closed" }]
+            }
+          }
+        },
+        {
+          "name": "Get Assignments - Filter by Subject",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/assignments?subject=Computer Science",
+              "host": ["{{base_url}}"],
+              "path": ["assignments"],
+              "query": [{ "key": "subject", "value": "Computer Science" }]
+            }
+          }
+        },
+        {
+          "name": "Get Assignments - Sort by Due Date",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/assignments?sort=dueDate",
+              "host": ["{{base_url}}"],
+              "path": ["assignments"],
+              "query": [{ "key": "sort", "value": "dueDate" }]
+            }
+          }
+        },
+        {
+          "name": "Search Assignments",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/assignments?search=lab",
+              "host": ["{{base_url}}"],
+              "path": ["assignments"],
+              "query": [{ "key": "search", "value": "lab" }]
+            }
+          }
+        },
+        {
+          "name": "Get Assignment by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{base_url}}/assignments/{{assignment_id}}", "host": ["{{base_url}}"], "path": ["assignments", "{{assignment_id}}"] }
+          }
+        },
+        {
+          "name": "Update Assignment",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Data Structures Lab 1 - Updated\",\n  \"description\": \"Updated description: Implement BST with insert, search, and delete.\",\n  \"dueDate\": \"2025-12-31T23:59:00\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/assignments/{{assignment_id}}", "host": ["{{base_url}}"], "path": ["assignments", "{{assignment_id}}"] }
+          }
+        },
+        {
+          "name": "Delete Assignment",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{base_url}}/assignments/{{assignment_id}}", "host": ["{{base_url}}"], "path": ["assignments", "{{assignment_id}}"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Submissions",
+      "item": [
+        {
+          "name": "Submit Assignment",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"studentName\": \"Ravi Kumar\",\n  \"studentEmail\": \"ravi@example.com\",\n  \"content\": \"Here is my implementation of the Binary Search Tree in JavaScript...\\n\\nclass Node { constructor(value) { this.value = value; this.left = null; this.right = null; } }\\n\\nclass BST { insert(value) { ... } search(value) { ... } }\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/assignments/{{assignment_id}}/submit", "host": ["{{base_url}}"], "path": ["assignments", "{{assignment_id}}", "submit"] }
+          }
+        },
+        {
+          "name": "Submit Assignment - Duplicate (should fail)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"studentName\": \"Ravi Kumar\",\n  \"studentEmail\": \"ravi@example.com\",\n  \"content\": \"Trying to submit again...\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/assignments/{{assignment_id}}/submit", "host": ["{{base_url}}"], "path": ["assignments", "{{assignment_id}}", "submit"] }
+          }
+        },
+        {
+          "name": "Submit Assignment - Missing Fields (should fail)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"studentName\": \"Priya Singh\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/assignments/{{assignment_id}}/submit", "host": ["{{base_url}}"], "path": ["assignments", "{{assignment_id}}", "submit"] }
+          }
+        },
+        {
+          "name": "Get Submissions for Assignment",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{base_url}}/assignments/{{assignment_id}}/submissions", "host": ["{{base_url}}"], "path": ["assignments", "{{assignment_id}}", "submissions"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Validation & Edge Cases",
+      "item": [
+        {
+          "name": "Create Assignment - Missing Fields (should fail)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Incomplete Assignment\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/assignments", "host": ["{{base_url}}"], "path": ["assignments"] }
+          }
+        },
+        {
+          "name": "Get Assignment - Invalid ID (should fail)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{base_url}}/assignments/invalid-id-123", "host": ["{{base_url}}"], "path": ["assignments", "invalid-id-123"] }
+          }
+        },
+        {
+          "name": "Create Assignment - Already Overdue (creates as closed)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Old Assignment\",\n  \"subject\": \"History\",\n  \"description\": \"This assignment is already past its due date.\",\n  \"dueDate\": \"2020-01-01T00:00:00\",\n  \"instructor\": \"Dr. Mehta\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/assignments", "host": ["{{base_url}}"], "path": ["assignments"] }
+          }
+        }
+      ]
+    }
+  ]
+}
